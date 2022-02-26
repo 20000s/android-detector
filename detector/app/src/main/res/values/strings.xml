@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">detector</string>
+    <string name="frida">frida</string>
+    <string name="ptrace">ptrace</string>
+</resources>
