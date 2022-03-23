@@ -14,7 +14,7 @@
  *
  *  anti xposed
  *     3.尝试关闭XP框架 修改disable hooks
- *     4.查看你xposed的sHookedMethodCallbacks作用域
+ *     4.查看你xposed的sHookedMethodCallbacks作用域 将他们清0
  *
  *
  */
@@ -33,10 +33,10 @@ int check_xposed_callback(JNIEnv *env){
     jobject thread = (*env)->CallStaticObjectMethod((JNIEnv *) env, threadclass, currentthread);
     jobjectArray stackTraces = (jobjectArray) (*env)->CallObjectMethod((JNIEnv *) env, thread, getStackTrace);
     int length = (*env)->GetArrayLength((JNIEnv *) env, stackTraces);
-
+    LOGD("fuck xposed %d",length);
     for (int i = 0; i < length; i++) {
-        jobject stackTrace = (*env)->GetObjectArrayElement((JNIEnv *) env, stackTraces, i);
-        LOGD("stacktrace : %s",stackTrace);
+        jobject stackTrace = (*env)->GetObjectArrayElement( env, stackTraces, i);
+      //  LOGD("stacktrace : %s",stackTraces);
         jstring jclassName = (jstring) (*env)->CallObjectMethod((JNIEnv *) env, stackTrace, getClassName);
         const char *className = (*env)->GetStringUTFChars((JNIEnv *) env, jclassName, NULL);
         char methodHook[] = "de.robv.android.xposed.XC_MethodHook";
@@ -85,4 +85,8 @@ Java_com_s20000s_detector_MainActivity_AntiXposed(JNIEnv *env, jclass clazz) {
 
     int ret = check_xposed_callback(env);
     int ret1 = check_xposed_loadclass(env);
+    if(ret || ret1 ){
+        return (*env)->NewStringUTF(env,"found");
+    } else
+    return (*env)->NewStringUTF(env,"security");
 }

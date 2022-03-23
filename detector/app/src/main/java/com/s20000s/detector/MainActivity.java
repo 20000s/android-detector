@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.b2).setOnClickListener(this);
         findViewById(R.id.b3).setOnClickListener(this);
         findViewById(R.id.b4).setOnClickListener(this);
+        findViewById(R.id.b5).setOnClickListener(this);
+        findViewById(R.id.b6).setOnClickListener(this);
 
     }
 
@@ -50,6 +52,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 TextView v3 = findViewById(R.id.frida);
                 v3.setText(AntiFrida());
                 break;
+            case R.id.b4:
+                TextView v4 = findViewById(R.id.xposed);
+                v4.setText(AntiXposed());
+                break;
+            case R.id.b5:
+                TextView v5 = findViewById(R.id.riru);
+                v5.setText(AntiRiru());
+                break;
+            case R.id.b6:
+                TextView v6 = findViewById(R.id.magisk);
+                v6.setText(AntiMagisk());
+                break;
         }
     }
 
@@ -61,57 +75,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static native String AntiRoot();
     public static native String AntiFrida();
     public static native String AntiXposed();
+    public static native String AntiRiru();
+    public static native String AntiMagisk();
 
 
-
-    private boolean isXposedExists() {
-        try {
-            Object xpHelperObj = ClassLoader
-                    .getSystemClassLoader()
-                    .loadClass(XPOSED_HELPERS)
-                    .newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-            return true;
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            return true;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        try {
-            Object xpBridgeObj = ClassLoader
-                    .getSystemClassLoader()
-                    .loadClass(XPOSED_BRIDGE)
-                    .newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-            return true;
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            return true;
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
-    /**
-     * 通过主动抛出异常，检查堆栈信息来判断是否存在XP框架
-     *
-     * @return
-     */
-    private boolean isXposedExistByThrow() {
-        try {
-            throw new Exception("gg");
-        } catch (Exception e) {
-            for (StackTraceElement stackTraceElement : e.getStackTrace()) {
-                if (stackTraceElement.getClassName().contains(XPOSED_BRIDGE)) return true;
-            }
-            return false;
-        }
-    }
 }

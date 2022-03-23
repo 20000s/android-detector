@@ -3,17 +3,17 @@
 
 # Sets the minimum version of CMake required to build the native library.
 
-cmake_minimum_required(VERSION 3.10.2)
+cmake_minimum_required(VERSION 3.18.1)
 
 # Declares and names the project.
 
 project("detector")
-
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
 # You can define multiple libraries, and CMake builds them for you.
 # Gradle automatically packages shared libraries with your APK.
-
+# Enable C++11
+set(CMAKE_CXX_STANDARD 20)
 add_library( # Sets the name of the library.
              native-lib
 
@@ -24,7 +24,11 @@ add_library( # Sets the name of the library.
         antiptrace.c
         antiroot.c
         antifrida.c
-        antixposed.c)
+        antixposed.c
+        AntiRiru.cpp
+        elf_util.cpp
+        solist.cpp
+        antimagisk.c)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because CMake includes system libraries in the search path by
